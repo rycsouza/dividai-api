@@ -34,6 +34,9 @@ export default class Usuario extends compose(BaseModel, AuthFinder) {
   @column()
   declare avatar: string
 
+  @column()
+  declare ativo2FA: boolean
+
   @column.dateTime({ autoCreate: true })
   declare dataCadastro: DateTime
 

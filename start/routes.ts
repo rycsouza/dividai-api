@@ -15,6 +15,7 @@ router
     router
       .group(() => {
         router.post('registrar', [UsuariosController, 'store'])
+        router.post('login', [UsuariosController, 'login'])
       })
       .prefix('usuarios')
   })
