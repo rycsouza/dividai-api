@@ -42,7 +42,6 @@ export const loginUsuarioValidator = vine.compile(
       .maxLength(11)
       .optional(),
     username: vine.string().trim().maxLength(20).optional(),
-    codigo: vine.string().trim().maxLength(6).optional(),
     senha: vine.string(),
   })
 )

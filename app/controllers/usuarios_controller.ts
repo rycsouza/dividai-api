@@ -12,7 +12,6 @@ export default class UsuariosController {
         payload['username']?.toLowerCase() ??
         payload['nome']?.toLowerCase()?.replace(/\s/g, '').slice(0, 20)
 
-      //pegar o max id do username, regex de numero e usar o +1 para criar o novo
       const usernameExists = await Usuario.query().where({ username: payload['username'] })
 
       if (usernameExists?.length)
@@ -39,20 +38,12 @@ export default class UsuariosController {
           message: 'Pelo menos um dos campos (email, telefone ou username) deve ser informado.',
         })
 
-      const whereObj: { [key: string]: any } = {}
-      Object.keys(payload).forEach((key) => {
-        if (!payload?.[key] || key == 'senha') return
-
-        whereObj[key] = payload[key]
-      })
-
-      const usuario = await Usuario.findBy(whereObj)
+      const usuario = await Usuario.verifyCredentials(payload['email'], payload['senha'])
       if (!usuario)
         return response.badRequest({
           message: 'Usuário não encontrado. Verifique os dados informados.',
         })
 
-      //validar senhas antes
       const token = await Usuario.accessTokens.create(usuario)
 
       return response.status(200).send({

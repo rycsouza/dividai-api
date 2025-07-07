@@ -7,6 +7,6 @@ COPY . .
 
 RUN npm i
 
-EXPOSE 8282
+EXPOSE 3000
 
-CMD ["sh", "-c", "node ace serve --watch"]
+CMD ["sh", "-c", "node ace serve --watch", "node ace migration:run --force"]
