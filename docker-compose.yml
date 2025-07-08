@@ -1,17 +1,4 @@
 services:
-  database:
-    container_name: mysql
-    image: mysql:latest
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
-      MYSQL_DATABASE: "${DB_DATABASE}"
-      MYSQL_USER: "${DB_USER}"
-      MYSQL_PASSWORD: "${DB_PASSWORD}"
-    ports:
-     - "${DB_PORT}:${DB_PORT}"
-    env_file:
-      - .env
   api:
     container_name: dividai-api
     build:
@@ -33,3 +20,16 @@ services:
           path: package.json
     depends_on:
       - database
+  database:
+    container_name: mysql
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MYSQL_DATABASE: "${DB_DATABASE}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    ports:
+     - "${DB_PORT}:${DB_PORT}"
+    env_file:
+      - .env

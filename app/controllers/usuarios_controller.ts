@@ -8,15 +8,6 @@ export default class UsuariosController {
     try {
       const payload = await request.validateUsing(criarUsuarioValidator)
 
-      payload['username'] =
-        payload['username']?.toLowerCase() ??
-        payload['nome']?.toLowerCase()?.replace(/\s/g, '').slice(0, 20)
-
-      const usernameExists = await Usuario.query().where({ username: payload['username'] })
-
-      if (usernameExists?.length)
-        payload['username'] = `${payload['username']}${usernameExists?.length + 1}`
-
       const usuario = await Usuario.create(payload)
       const token = await Usuario.accessTokens.create(usuario)
 

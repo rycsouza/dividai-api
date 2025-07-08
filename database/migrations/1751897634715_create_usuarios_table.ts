@@ -14,7 +14,7 @@ export default class extends BaseSchema {
       table.string('email').notNullable().unique()
       table.string('telefone').unique()
       table.string('username').unique()
-      table.string('senha')
+      table.string('senha').notNullable()
       table.string('avatar')
       table.string('ativo2FA')
     })

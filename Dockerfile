@@ -9,4 +9,5 @@ RUN npm i
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "node ace serve --watch", "node ace migration:run --force"]
+CMD ["sh", "-c", "node ace serve --watch"]
+
