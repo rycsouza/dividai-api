@@ -11,8 +11,8 @@ export default class UsuariosController {
       const usuario = await Usuario.create(payload)
       const token = await Usuario.accessTokens.create(usuario)
 
-      return response.status(201).send({
-        message: 'Usuário criado com sucesso.',
+      return response.created({
+        mensagem: 'Usuário criado com sucesso.',
         token: token.value!.release(),
       })
     } catch (error) {
@@ -26,19 +26,19 @@ export default class UsuariosController {
 
       if (!payload?.['email'] && !payload?.['telefone'] && !payload?.['username'])
         return response.badRequest({
-          message: 'Pelo menos um dos campos (email, telefone ou username) deve ser informado.',
+          mensagem: 'Pelo menos um dos campos (email, telefone ou username) deve ser informado.',
         })
 
       const usuario = await Usuario.verifyCredentials(payload['email'], payload['senha'])
       if (!usuario)
         return response.badRequest({
-          message: 'Usuário não encontrado. Verifique os dados informados.',
+          mensagem: 'Usuário não encontrado. Verifique os dados informados.',
         })
 
       const token = await Usuario.accessTokens.create(usuario)
 
-      return response.status(200).send({
-        message: 'Login realizado com sucesso.',
+      return response.ok({
+        mensage: 'Login realizado com sucesso.',
         token: token.value!.release(),
       })
     } catch (error) {
