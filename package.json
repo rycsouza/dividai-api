@@ -30,7 +30,8 @@
     "#start/*": "./start/*.js",
     "#tests/*": "./tests/*.js",
     "#config/*": "./config/*.js",
-    "#helpers/*": "./helpers/*.js"
+    "#helpers/*": "./app/helpers/*.js",
+    "#jobs/*": "./app/jobs/*.js"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^7.8.2",
@@ -57,7 +58,9 @@
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.6.1",
     "@adonisjs/mail": "^9.2.2",
+    "@adonisjs/redis": "^9.2.0",
     "@vinejs/vine": "^3.0.1",
+    "bullmq": "^5.56.2",
     "luxon": "^3.6.1",
     "mysql2": "^3.14.1",
     "reflect-metadata": "^0.2.2"

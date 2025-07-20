@@ -1,6 +1,7 @@
 import Grupo from '#models/grupo'
 import Usuario from '#models/usuario'
 import UsuarioGrupo from '#models/usuario_grupo'
+import env from '#start/env'
 import {
   addMembro,
   atualizarGrupo,
@@ -153,12 +154,14 @@ export default class GruposController {
 
       const usuario = auth.user!
 
-      await mail.send((message) => {
+      await mail.sendLater((message) => {
         message
           .to(email)
           .from(usuario.email, usuario.nome)
-          .subject(`Convite: ${grupo.nome}`)
-          .text(`${usuario.nome} te convidou para participar do grupo ${grupo.nome}...`)
+          .subject('[DividAI] Convite de Grupo')
+          .text(
+            `${usuario.nome} convidou você para o grupo ${grupo.nome}, clique no link para entrar no grupo: http://${env.get('HOST')}:${env.get('PORT')}`
+          )
       })
 
       return response.ok({
