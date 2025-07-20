@@ -40,3 +40,5 @@ services:
     restart: always
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
+    env_file:
+      - .env

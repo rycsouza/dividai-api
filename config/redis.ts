@@ -8,7 +8,7 @@ export default defineConfig({
       host: env.get('REDIS_HOST'),
       port: env.get('REDIS_PORT'),
       password: env.get('REDIS_PASSWORD', ''),
-      db: 1,
+      db: env.get('REDIS_DATABASES', 0),
       keyPrefix: '',
     },
   },

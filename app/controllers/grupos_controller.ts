@@ -1,7 +1,6 @@
 import Grupo from '#models/grupo'
 import Usuario from '#models/usuario'
 import UsuarioGrupo from '#models/usuario_grupo'
-import env from '#start/env'
 import {
   addMembro,
   atualizarGrupo,
@@ -160,7 +159,7 @@ export default class GruposController {
           .from(usuario.email, usuario.nome)
           .subject('[DividAI] Convite de Grupo')
           .text(
-            `${usuario.nome} convidou você para o grupo ${grupo.nome}, clique no link para entrar no grupo: http://${env.get('HOST')}:${env.get('PORT')}`
+            `${usuario.nome} convidou você para o grupo ${grupo.nome}, clique no link para entrar no grupo: https://dividai.com.br/${grupo.id}/aceitar`
           )
       })
 

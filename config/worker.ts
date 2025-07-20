@@ -1,10 +1,25 @@
-import mail from '@adonisjs/mail/services/main'
 import { Worker } from 'bullmq'
+import env from '#start/env'
+import mail from '@adonisjs/mail/services/main'
 
-new Worker('emails', async (job) => {
-  if (job.name === 'send_email') {
-    const { mailMessage, config, mailerName } = job.data
+const connection = {
+  host: env.get('REDIS_HOST'),
+  port: Number(env.get('REDIS_PORT')),
+  db: Number(env.get('REDIS_DATABASES', 0)),
+}
 
-    await mail.use(mailerName).sendCompiled(mailMessage, config)
+new Worker(
+  'emails',
+  async (job) => {
+    if (job.name === 'send_email') {
+      const { mailMessage, config, mailerName } = job.data
+
+      console.log('[WORKER] Processando job de e-mail')
+
+      await mail.use(mailerName).sendCompiled(mailMessage, config)
+    }
+  },
+  {
+    connection,
   }
-})
+)

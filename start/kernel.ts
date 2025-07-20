@@ -45,3 +45,5 @@ export const middleware = router.named({
   permission: () => import('#middleware/check_permission_middleware'),
   auth: () => import('#middleware/auth_middleware'),
 })
+
+import './queue.js'
