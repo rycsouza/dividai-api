@@ -153,6 +153,25 @@ export default class GruposController {
 
       const usuario = auth.user!
 
+      if (email == usuario.email)
+        return response.badRequest({
+          mensagem: `Você não pode convidar a si mesmo para o grupo.`,
+        })
+
+      const usuarioExiste = await Usuario.findBy({ email })
+      if (!usuarioExiste)
+        return response.notFound({
+          mensagem: `Usuário ${email} não encontrado!`,
+        })
+
+      const usuarioJaEstaNoGrupo = await UsuarioGrupo.findBy({
+        usuarioId: usuarioExiste.id,
+      })
+      if (usuarioJaEstaNoGrupo)
+        return response.badRequest({
+          mensagem: `O usuário já está no grupo ${grupo.nome}!`,
+        })
+
       await mail.sendLater((message) => {
         message
           .to(email)
