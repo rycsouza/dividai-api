@@ -12,6 +12,7 @@ import router from '@adonisjs/core/services/router'
 
 const UsuariosController = () => import('#controllers/usuarios_controller')
 const GruposController = () => import('#controllers/grupos_controller')
+const DespesasController = () => import('#controllers/despesas_controller')
 
 router.group(() => {
   router
@@ -35,9 +36,25 @@ router.group(() => {
           router.get('/:id/membros', [GruposController, 'indexMembros'])
           router.delete('/:id/membros', [GruposController, 'deleteMembro'])
           router.post('/:id/membros/convites', [GruposController, 'convidarMembro'])
+
+          //  router.get('/:id/dashboards', [DespesasController, 'index'])
         })
         .middleware([middleware.permission()])
     })
     .prefix('grupos')
+    .middleware([middleware.auth()])
+
+  router
+    .group(() => {
+      router
+        .group(() => {
+          router.post('/', [DespesasController, 'store'])
+          router.get('/', [DespesasController, 'index'])
+        })
+        .middleware([middleware.permission()])
+
+      router.delete('/:id', [DespesasController, 'delete'])
+    })
+    .prefix('despesas')
     .middleware([middleware.auth()])
 })

@@ -5,10 +5,13 @@ import db from '@adonisjs/lucid/services/db'
 export default class CheckPermissionMiddleware {
   async handle({ request, response, auth }: HttpContext, next: NextFn) {
     const { id } = request.params()
+    let { grupoId } = request.all()
 
-    if (!id)
+    grupoId = grupoId ?? id
+
+    if (!grupoId)
       return response.badRequest({
-        mensagem: `O parâmetro <id> é obrigatório.`,
+        mensagem: `O identificador do grupo é obrigatório.`,
       })
 
     if (!auth.user?.id)
@@ -27,17 +30,20 @@ export default class CheckPermissionMiddleware {
                 AND ug.grupo_id = ?
               LIMIT 1;
             `,
-        [auth.user!.id, id]
+        [auth.user!.id, grupoId]
       )
     )[0]?.[0]
 
     if (!grupo)
       return response.unauthorized({
-        mensagem: `Você não tem autorização para administrar o grupo ${id}.`,
+        mensagem: `Você não tem autorização para administrar o grupo ${grupoId}.`,
       })
 
-    request.all().grupo = grupo
-    request.all().id = id
+    request.updateBody({
+      ...request.all(),
+      grupo,
+      id,
+    })
 
     return await next()
   }

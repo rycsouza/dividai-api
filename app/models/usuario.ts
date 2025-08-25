@@ -2,8 +2,10 @@ import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { compose } from '@adonisjs/core/helpers'
 import hash from '@adonisjs/core/services/hash'
-import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { BaseModel, column, manyToMany } from '@adonisjs/lucid/orm'
+import type { ManyToMany } from '@adonisjs/lucid/types/relations'
 import { DateTime } from 'luxon'
+import Despesa from './despesa.js'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email', 'telefone', 'username'],
@@ -49,4 +51,14 @@ export default class Usuario extends compose(BaseModel, AuthFinder) {
     type: 'auth_token',
     tokenSecretLength: 40,
   })
+
+  @manyToMany(() => Despesa, {
+    pivotTable: 'usuario_despesa',
+    localKey: 'id',
+    pivotForeignKey: 'usuario_id',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'despesa_id',
+    pivotColumns: ['valor', 'pagador', 'data_cadastro', 'data_atualizacao'],
+  })
+  declare despesas: ManyToMany<typeof Despesa>
 }
